@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+  <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+手机号：<input type="text" id="phone" name="phone"></br>
+
+次数：<input type="text" id="number" name="number">
+<button id="getCode">点我轰炸</button>
+</br>
+验证码：<input type="text" id="code" name="code">
+
+<button id="authCode">点我验证</button>
+
+
+</body>
+<script type="text/javascript">
+
+    $("#getCode").click(function(){
+      var number = $('input[name="number"]').val();
+      for (var i=0;i<number;i++)
+      {
+        $.ajax({
+          asycn : true,
+          contentType : "application/json",
+          data : JSON.stringify({
+            "phone":$('input[name="phone"]').val()
+          }),
+          dataType : "json",
+          error : function() {
+            alert("请求错误");
+          },
+          success : function(data) {
+            var data = JSON.stringify(data);
+            alert("请求成功:" + JSON.parse(data).msg);
+          },
+          url : "https://pdf.kfsafe.cn/sms/phone/code",
+          type : "post"
+        });
+      }
+
+    });
+
+
+    $("#authCode").click(function(){
+
+        $.ajax({
+          asycn : true,
+          contentType : "application/json",
+          data : JSON.stringify({
+            "phone":$('input[name="phone"]').val(),
+            "code":$('input[name="code"]').val()
+          }),
+          dataType : "json",
+          error : function() {
+            alert("请求错误");
+          },
+          success : function(data) {
+            var data = JSON.stringify(data);
+            if (JSON.parse(data).msg == "ok"){
+              alert("验证成功");
+            }
+            alert("请求成功:" + JSON.parse(data).msg);
+          },
+          url : "https://pdf.kfsafe.cn/sms/phone/code",
+          type : "post"
+        });
+
+
+    });
+</script>
+</html>
